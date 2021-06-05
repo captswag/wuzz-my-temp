@@ -8,7 +8,7 @@ CPU_SENSOR = 'k10temp-pci-00c3'
 GPU_SENSOR = 'amdgpu-pci-0a00'
 
 
-def startLogging():
+def start_logging():
     sensors.init()
     try:
         for chip in sensors.iter_detected_chips():
@@ -20,4 +20,4 @@ def startLogging():
 
 
 if __name__ == '__main__':
-    startLogging()
+    start_logging()
