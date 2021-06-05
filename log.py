@@ -21,7 +21,8 @@ def start_logging():
 
 
 def get_db_file_name():
-    datetime.now()
+    now = datetime.now()
+    return 'db-{datetime}.json'.format(datetime=now.strftime("%d-%m-%Y-%H-%M"))
 
 
 if __name__ == '__main__':
