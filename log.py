@@ -3,6 +3,7 @@
 import sensors
 
 from tinydb import TinyDB, Query
+from datetime import datetime
 
 CPU_SENSOR = 'k10temp-pci-00c3'
 GPU_SENSOR = 'amdgpu-pci-0a00'
@@ -17,6 +18,10 @@ def start_logging():
                 print(' %s: %.2f' % (feature.label, feature.get_value()))
     finally:
         sensors.cleanup()
+
+
+def get_db_file_name():
+    datetime.now()
 
 
 if __name__ == '__main__':
