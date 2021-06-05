@@ -1,0 +1,2 @@
+PySensors==0.0.4
+tinydb==4.4.0
