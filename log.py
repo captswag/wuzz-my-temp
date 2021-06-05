@@ -8,6 +8,8 @@ from datetime import datetime
 CPU_SENSOR = 'k10temp-pci-00c3'
 GPU_SENSOR = 'amdgpu-pci-0a00'
 
+SCRIPT_DURATION = 10*60
+
 
 def start_logging():
     sensors.init()
