@@ -39,17 +39,15 @@ def get_required_chips(required_sensor_names, detected_chips):
 
 
 def setup_db_and_start_timer(required_chips):
-    db = setup_db(required_chips)
-    log_sensor_data(required_chips)
+    db = setup_db()
+    # Will be called in a timer scheduled every one second
+    log_sensor_data(db, required_chips)
 
 
 # Creates a new db and setup the required tables
-def setup_db(required_chips):
+def setup_db():
     db_name = get_db_file_name()
-    db = TinyDB(db_name)
-    for chip in required_chips:
-        db.table(chip.__str__())
-    return db
+    return TinyDB(db_name)
 
 
 def get_db_file_name():
@@ -57,8 +55,9 @@ def get_db_file_name():
     return 'db-{datetime}.json'.format(datetime=now.strftime("%d-%m-%Y-%H-%M"))
 
 
-def log_sensor_data(detected_chips):
+def log_sensor_data(db, detected_chips):
     for chip in detected_chips:
+        table = db.table(chip.__str__())
         print('%s at %s' % (chip.__str__(), chip.adapter_name))
         for feature in chip:
             print(' %s: %.2f' % (feature.label, feature.get_value()))
