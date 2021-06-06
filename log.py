@@ -14,16 +14,16 @@ SCRIPT_DURATION = 10*60
 def start_logging():
     sensors.init()
 
-    # Get the required chip objects, which in our case is the CPU and GPU chips (get_required_chips)
-    # Start a timer which runs for the required SCRIPT_DURATION
-    # Log the feature label/value pair (log_sensor_data)
-    # Once the SCRIPT_DURATION is complete, the control is given back to start_logging() where sensor.cleanup() happens
+    # Order of execution
+    # 1. get_required_chips() from the required_sensor_names and the detected_chips in the system
+    # 2. setup_db_and_start_timer(), timer duration = SCRIPT_DURATION
+    # 3. log_sensor_data() of the required_chips
 
     try:
         required_sensor_names = [CPU_SENSOR_NAME, GPU_SENSOR_NAME]
         required_chips = get_required_chips(
             required_sensor_names, sensors.iter_detected_chips())
-        log_sensor_data(required_chips)
+        setup_db_and_start_timer(required_chips)
     finally:
         sensors.cleanup()
 
@@ -38,22 +38,30 @@ def get_required_chips(required_sensor_names, detected_chips):
     return required_chips
 
 
-def log_sensor_data(detected_chips):
-    db = create_database()
-    for chip in detected_chips:
-        print('%s at %s' % (chip.__str__(), chip.adapter_name))
-        for feature in chip:
-            print(' %s: %.2f' % (feature.label, feature.get_value()))
+def setup_db_and_start_timer(required_chips):
+    db = setup_db(required_chips)
+    log_sensor_data(required_chips)
 
 
-def create_database():
+# Creates a new db and setup the required tables
+def setup_db(required_chips):
     db_name = get_db_file_name()
-    return TinyDB(db_name)
+    db = TinyDB(db_name)
+    for chip in required_chips:
+        db.table(chip.__str__())
+    return db
 
 
 def get_db_file_name():
     now = datetime.now()
     return 'db-{datetime}.json'.format(datetime=now.strftime("%d-%m-%Y-%H-%M"))
+
+
+def log_sensor_data(detected_chips):
+    for chip in detected_chips:
+        print('%s at %s' % (chip.__str__(), chip.adapter_name))
+        for feature in chip:
+            print(' %s: %.2f' % (feature.label, feature.get_value()))
 
 
 if __name__ == '__main__':
