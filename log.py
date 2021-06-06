@@ -21,9 +21,16 @@ def start_logging():
     # sensors.cleanup() happens.
 
     try:
+        required_sensor_names = [CPU_SENSOR_NAME, GPU_SENSOR_NAME]
+        required_chips = get_required_chips(
+            required_sensor_names, sensors.iter_detected_chips())
         log_sensor_data(sensors.iter_detected_chips())
     finally:
         sensors.cleanup()
+
+
+def get_required_chips(required_sensor_names, detected_chips):
+    return "required chips"
 
 
 def get_db_file_name():
