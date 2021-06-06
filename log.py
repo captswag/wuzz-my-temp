@@ -41,11 +41,6 @@ def get_required_chips(required_sensor_names, detected_chips):
     return required_chips
 
 
-def start_logging(db, required_chips, script_duration):
-    log_sensor_data(db, 1, required_chips)
-
-
-# Creates a new db and setup the required tables
 def setup_db():
     db_name = get_db_file_name()
     return TinyDB(db_name)
@@ -54,6 +49,14 @@ def setup_db():
 def get_db_file_name():
     now = datetime.now()
     return 'db-{datetime}.json'.format(datetime=now.strftime("%d-%m-%Y-%H-%M"))
+
+
+def start_logging(db, required_chips, script_duration):
+    time_elapsed = 0
+    while (timer < script_duration):
+        log_sensor_data(db, time_elapsed, required_chips)
+        time.sleep(1)  # Interval is set to 1 second
+        time_elapsed += 1
 
 
 def log_sensor_data(db, time_elapsed, detected_chips):
