@@ -58,9 +58,10 @@ def get_db_file_name():
 def log_sensor_data(db, detected_chips):
     for chip in detected_chips:
         table = db.table(chip.__str__())
-        print('%s at %s' % (chip.__str__(), chip.adapter_name))
+        features = {}
         for feature in chip:
-            print(' %s: %.2f' % (feature.label, feature.get_value()))
+            features[feature.label] = feature.get_value()
+        table.insert(features)
 
 
 if __name__ == '__main__':
