@@ -13,7 +13,7 @@ GPU_SENSOR_NAME = 'amdgpu-pci-0a00'
 SCRIPT_DURATION = 10*60
 
 
-def start_logging():
+def setup():
     sensors.init()
 
     # Order of execution
@@ -25,7 +25,8 @@ def start_logging():
         required_sensor_names = [CPU_SENSOR_NAME, GPU_SENSOR_NAME]
         required_chips = get_required_chips(
             required_sensor_names, sensors.iter_detected_chips())
-        setup_db_and_start_timer(required_chips)
+        db = setup_db()
+        start_logging(db, required_chips, SCRIPT_DURATION)
     finally:
         sensors.cleanup()
 
@@ -40,9 +41,7 @@ def get_required_chips(required_sensor_names, detected_chips):
     return required_chips
 
 
-def setup_db_and_start_timer(required_chips):
-    db = setup_db()
-    # Will be called in a timer scheduled every one second
+def start_logging(db, required_chips, script_duration):
     log_sensor_data(db, 1, required_chips)
 
 
@@ -68,4 +67,4 @@ def log_sensor_data(db, time_elapsed, detected_chips):
 
 
 if __name__ == '__main__':
-    start_logging()
+    setup()
