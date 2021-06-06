@@ -18,7 +18,8 @@ def setup():
 
     # Order of execution
     # 1. get_required_chips() from the required_sensor_names and the detected_chips in the system
-    # 2. setup_db_and_start_timer(), timer duration = SCRIPT_DURATION
+    # 2. setup_db()
+    # 3. start_logging() creates a timer from 0 to SCRIPT_DURATION
     # 3. log_sensor_data() of the required_chips
 
     try:
