@@ -43,7 +43,7 @@ def get_required_chips(required_sensor_names, detected_chips):
 def setup_db_and_start_timer(required_chips):
     db = setup_db()
     # Will be called in a timer scheduled every one second
-    log_sensor_data(db, required_chips)
+    log_sensor_data(db, 1, required_chips)
 
 
 # Creates a new db and setup the required tables
@@ -57,10 +57,10 @@ def get_db_file_name():
     return 'db-{datetime}.json'.format(datetime=now.strftime("%d-%m-%Y-%H-%M"))
 
 
-def log_sensor_data(db, detected_chips):
+def log_sensor_data(db, time_elapsed, detected_chips):
     for chip in detected_chips:
         table = db.table(chip.__str__())
-        features = {}
+        features = {'time_elapsed': time_elapsed}
         for feature in chip:
             features[feature.label] = '{:.2f}'.format(
                 round(feature.get_value(), 2))
