@@ -5,9 +5,11 @@ import sensors
 from tinydb import TinyDB, Query
 from datetime import datetime
 
+# Enhancement suggestion 1: take this as system args
 CPU_SENSOR_NAME = 'k10temp-pci-00c3'
 GPU_SENSOR_NAME = 'amdgpu-pci-0a00'
 
+# Enhacement suggestion 2: take this as system args
 SCRIPT_DURATION = 10*60
 
 
@@ -60,7 +62,8 @@ def log_sensor_data(db, detected_chips):
         table = db.table(chip.__str__())
         features = {}
         for feature in chip:
-            features[feature.label] = feature.get_value()
+            features[feature.label] = '{:.2f}'.format(
+                round(feature.get_value(), 2))
         table.insert(features)
 
 
