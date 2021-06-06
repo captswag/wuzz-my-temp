@@ -4,6 +4,7 @@ import sensors
 
 from tinydb import TinyDB, Query
 from datetime import datetime
+import time
 
 # Enhancement suggestion 1: take this as system args
 CPU_SENSOR_NAME = 'k10temp-pci-00c3'
@@ -54,7 +55,7 @@ def get_db_file_name():
 
 def start_logging(db, required_chips, script_duration):
     time_elapsed = 0
-    while (timer < script_duration):
+    while (time_elapsed < script_duration):
         log_sensor_data(db, time_elapsed, required_chips)
         time.sleep(1)  # Interval is set to 1 second
         time_elapsed += 1
