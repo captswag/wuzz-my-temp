@@ -37,7 +37,7 @@ def get_required_chips(required_sensor_names, detected_chips):
     required_chips = []
     for chip in detected_chips:
         for sensor_name in required_sensor_names:
-            if (chip.__str__() == sensor_name):
+            if chip.__str__() == sensor_name:
                 required_chips.append(chip)
                 break
     return required_chips
