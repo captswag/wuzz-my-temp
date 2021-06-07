@@ -5,6 +5,7 @@ import sensors
 from tinydb import TinyDB, Query
 from datetime import datetime
 import time
+import os
 
 # Enhancement suggestion 1: take this as system args
 CPU_SENSOR_NAME = 'k10temp-pci-00c3'
@@ -44,8 +45,15 @@ def get_required_chips(required_sensor_names, detected_chips):
 
 
 def setup_db():
+    folder_name = "logs"
+    create_logs_directory(folder_name)
     db_name = get_db_file_name()
-    return TinyDB(db_name)
+    return TinyDB('{folder_name}/{db_name}'.format(folder_name=folder_name, db_name=db_name))
+
+
+def create_logs_directory(folder_name):
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
 
 
 def get_db_file_name():
