@@ -17,13 +17,6 @@ SCRIPT_DURATION = 10*60
 
 def setup():
     sensors.init()
-
-    # Order of execution
-    # 1. get_required_chips() from the required_sensor_names and the detected_chips in the system
-    # 2. setup_db()
-    # 3. start_logging() creates a timer from 0 to SCRIPT_DURATION
-    # 3. log_sensor_data() of the required_chips
-
     try:
         required_sensor_names = [CPU_SENSOR_NAME, GPU_SENSOR_NAME]
         required_chips = get_required_chips(
